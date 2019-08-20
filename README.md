@@ -1,2 +1,2 @@
-# SergeBayet
-Landing page
+# Mon-CV
+Exercice HTML/CSS (Grid enhancement)
