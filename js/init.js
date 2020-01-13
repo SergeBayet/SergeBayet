@@ -4,22 +4,49 @@
 /*
 -----------------------------------------------------------------------------------*/
 
-jQuery(document).ready(function($) {
+jQuery(document).ready(function ($) {
   let skills = Array.from($(".tag"))
-    .map(function(x) {
+    .map(function (x) {
       return x.textContent;
     })
-    .sort(function(a, b) {
+    .sort(function (a, b) {
       return a > b;
     });
 
   console.log(skills);
+  /* Traduction */
+  let lang = 'en';
+  trad();
+  function trad() {
+    if (lang == 'en') {
+      $('.fr').hide();
+      $('.en').show();
+    }
+  }
+  $("body").on('click', '.toggle-lang', function (e) {
+    e.preventDefault();
+    $(".en").each(function (x) {
+      console.log(x);
+      let temp = $(this).html();
+      let _this = $(this);
+      $(this).fadeOut("slow", function () {
+        _this.html(_this.next().html());
+        _this.fadeIn("slow");
+        _this.next().html(temp);
+      });
+
+
+    });
+  })
+  $("body").on('DOMSubtreeModified', ".en", function (e) {
+    console.log(e);
+  });
 
   /*----------------------------------------------------*/
   /* FitText Settings
 ------------------------------------------------------ */
 
-  setTimeout(function() {
+  setTimeout(function () {
     $("h1.responsive-headline").fitText(1, {
       minFontSize: "40px",
       maxFontSize: "90px"
@@ -30,7 +57,7 @@ jQuery(document).ready(function($) {
   /* Smooth Scrolling
 ------------------------------------------------------ */
 
-  $(".smoothscroll").on("click", function(e) {
+  $("body").on("click", ".smoothscroll", function (e) {
     e.preventDefault();
 
     var target = this.hash,
@@ -44,7 +71,7 @@ jQuery(document).ready(function($) {
         },
         800,
         "swing",
-        function() {
+        function () {
           window.location.hash = target;
         }
       );
@@ -58,7 +85,7 @@ jQuery(document).ready(function($) {
   var navigation_links = $("#nav-wrap a");
 
   sections.waypoint({
-    handler: function(event, direction) {
+    handler: function (event, direction) {
       var active_section;
 
       active_section = $(this);
@@ -67,8 +94,10 @@ jQuery(document).ready(function($) {
       var active_link = $(
         '#nav-wrap a[href="#' + active_section.attr("id") + '"]'
       );
-
-      navigation_links.parent().removeClass("current");
+      $(".current").each(function (e) {
+        $(this).removeClass("current");
+      })
+      //navigation_links.parent().removeClass("current");
       active_link.parent().addClass("current");
     },
     offset: "35%"
@@ -80,7 +109,7 @@ jQuery(document).ready(function($) {
 ------------------------------------------------------ */
 
   $("header").css({ height: $(window).height() });
-  $(window).on("resize", function() {
+  $(window).on("resize", function () {
     $("header").css({ height: $(window).height() });
     $("body").css({ width: $(window).width() });
   });
@@ -89,7 +118,7 @@ jQuery(document).ready(function($) {
   /*	Fade In/Out Primary Navigation
 ------------------------------------------------------*/
 
-  $(window).on("scroll", function() {
+  $(window).on("scroll", function () {
     var h = $("header").height();
     var y = $(window).scrollTop();
     var nav = $("#nav-wrap");
@@ -117,7 +146,7 @@ jQuery(document).ready(function($) {
     mainClass: "mfp-fade"
   });
 
-  $(document).on("click", ".popup-modal-dismiss", function(e) {
+  $(document).on("click", ".popup-modal-dismiss", function (e) {
     e.preventDefault();
     $.magnificPopup.close();
   });
@@ -141,7 +170,7 @@ jQuery(document).ready(function($) {
   /*	contact form
 ------------------------------------------------------*/
 
-  $("form#contactForm button.submit").click(function() {
+  $("form#contactForm button.submit").click(function () {
     $("#image-loader").fadeIn();
 
     var contactName = $("#contactForm #contactName").val();
@@ -163,7 +192,7 @@ jQuery(document).ready(function($) {
       type: "POST",
       url: "inc/sendEmail.php",
       data: data,
-      success: function(msg) {
+      success: function (msg) {
         // Message was sent
         if (msg == "OK") {
           $("#image-loader").fadeOut();
